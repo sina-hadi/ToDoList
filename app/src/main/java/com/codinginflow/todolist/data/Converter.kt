@@ -16,5 +16,3 @@ class Converter {
     }
 
 }
-
-// Should learn this

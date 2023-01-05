@@ -33,7 +33,6 @@ class UpdateFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentUpdateBinding.inflate(inflater, container, false)
         binding.args = args
 
@@ -64,10 +63,10 @@ class UpdateFragment : Fragment() {
                         return false
                     }
                     R.id.menu_update -> {
-                        updateData(view)
+                        updateData()
                     }
                     R.id.menu_delete -> {
-                        deleteItem(view)
+                        deleteItem()
                     }
                 }
                 return true
@@ -75,7 +74,7 @@ class UpdateFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun updateData(view: View) {
+    private fun updateData() {
         val mTitle = binding.uetTitle.text.toString()
         val mPriority = binding.uspinner.selectedItem.toString()
         val mDescription = binding.uetDescription.text.toString()
@@ -89,13 +88,12 @@ class UpdateFragment : Fragment() {
                 priority = mySharedViewModel.parsePriority(mPriority),
                 description = mDescription
             )
-            Log.e("ABCD", myData.title)
             mToDoViewModel.updateData(myData)
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }
     }
 
-    private fun deleteItem(view: View) {
+    private fun deleteItem() {
         mToDoViewModel.deleteItem(args.currentitem)
         findNavController().navigate(R.id.action_updateFragment_to_listFragment)
     }

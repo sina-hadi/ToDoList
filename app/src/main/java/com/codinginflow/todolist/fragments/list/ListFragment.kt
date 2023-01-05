@@ -4,21 +4,15 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.GridLayout
-import android.widget.LinearLayout
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.codinginflow.todolist.R
@@ -28,7 +22,6 @@ import com.codinginflow.todolist.databinding.FragmentListBinding
 import com.codinginflow.todolist.fragments.SharedViewModel
 import com.codinginflow.todolist.fragments.list.adapter.ListAdapter
 import com.codinginflow.todolist.utils.observeOnce
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
@@ -45,17 +38,16 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
-        binding.mSharedViewModel = mSharedViewModel
-
-        setupRecyclerView()
+        binding.args = mSharedViewModel
 
         mToDoViewModel.getAllData.observe(viewLifecycleOwner, Observer { data ->
             adapter.setData(data)
             mSharedViewModel.checkIfDatabaseEmpty(data)
         })
+
+        setupRecyclerView()
 
         return binding.root
     }
@@ -66,17 +58,17 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun setupRecyclerView() {
-        val recyclerView = binding.recyclerView
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2 , StaggeredGridLayoutManager.VERTICAL)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         setupAnimatorRecyclerView()
 
-        swipeToDelete(recyclerView)
+        swipeToDelete(binding.recyclerView)
     }
 
-    private fun setupAnimatorRecyclerView(){
-            binding.recyclerView.itemAnimator = SlideInUpAnimator().apply {
-            addDuration = 300
+    private fun setupAnimatorRecyclerView() {
+        binding.recyclerView.itemAnimator = SlideInUpAnimator().apply {
+            addDuration = 100
         }
     }
 
@@ -175,11 +167,12 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         var searchQuery = query
         searchQuery = "%$searchQuery%"
 
-        mToDoViewModel.searchDatabase(searchQuery).observeOnce(viewLifecycleOwner, Observer { list ->
-            list?.let {
-                adapter.setData(it)
-            }
-        })
+        mToDoViewModel.searchDatabase(searchQuery)
+            .observeOnce(viewLifecycleOwner, Observer { list ->
+                list?.let {
+                    adapter.setData(it)
+                }
+            })
     }
 
 }

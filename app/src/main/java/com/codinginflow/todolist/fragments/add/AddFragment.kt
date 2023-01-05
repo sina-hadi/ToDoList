@@ -1,7 +1,6 @@
 package com.codinginflow.todolist.fragments.add
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.Spinner
@@ -25,8 +24,7 @@ class AddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_add, container, false)
+        val view = inflater.inflate(R.layout.fragment_add, container, false)
 
         view.findViewById<Spinner>(R.id.spinner).onItemSelectedListener = mSharedViewModel.listener
 

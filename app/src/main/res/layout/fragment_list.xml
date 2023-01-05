@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="mSharedViewModel"
+            name="args"
             type="com.codinginflow.todolist.fragments.SharedViewModel" />
     </data>
 
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible"
-            android:emptyDatabase="@{mSharedViewModel.emptyDatabase}"
+            android:emptyDatabase="@{args.emptyDatabase}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
