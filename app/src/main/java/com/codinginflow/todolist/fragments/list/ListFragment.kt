@@ -169,7 +169,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
         mToDoViewModel.searchDatabase(searchQuery)
             .observeOnce(viewLifecycleOwner, Observer { list ->
-                list?.let {
+                list.let {
                     adapter.setData(it)
                 }
             })
